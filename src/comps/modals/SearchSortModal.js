@@ -19,6 +19,23 @@ export default class SearchSortModal extends React.Component {
 		};
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.handleTagClick = this.handleTagClick.bind(this);
+		//to handle clicks outside modal
+		this.wrapperRef = React.createRef();
+		this.handleClickOutside = this.handleClickOutside.bind(this);
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.handleClickOutside);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.handleClickOutside);
+	}
+
+	handleClickOutside(event) {
+		if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+			this.handleCloseModal();
+		}
 	}
 
 	applyOptions() {
@@ -43,7 +60,12 @@ export default class SearchSortModal extends React.Component {
 			);
 		});
 		return (
-			<div className="modal" id="sort-search-options" style={this.props.modalShow ? { display: 'block' } : null}>
+			<div
+				className="modal"
+				id="sort-search-options"
+				style={this.props.modalShow ? { display: 'block' } : null}
+				ref={this.wrapperRef}
+			>
 				{sortList}
 			</div>
 		);

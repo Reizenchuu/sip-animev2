@@ -17,6 +17,23 @@ export default class SearchStudioModal extends React.Component {
 		this.resetOptions = this.resetOptions.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.applyOptions = this.applyOptions.bind(this);
+		//to handle clicks outside modal
+		this.wrapperRef = React.createRef();
+		this.handleClickOutside = this.handleClickOutside.bind(this);
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.handleClickOutside);
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.handleClickOutside);
+	}
+
+	handleClickOutside(event) {
+		if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+			this.handleCloseModal();
+		}
 	}
 
 	handleStudioClick(Studio, key) {
@@ -62,6 +79,7 @@ export default class SearchStudioModal extends React.Component {
 				className="search-config-option"
 				key={key}
 				onClick={() => this.handleStudioClick(StudioObj.studio, key)}
+				ref={this.wrapperRef}
 			>
 				{StudioObj.studio}
 			</div>

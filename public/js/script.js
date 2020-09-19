@@ -133,6 +133,10 @@ jQuery(document).ready(function($) {
 	});
 
 	$('*:not(.search-config-modal)').click((e) => {
-		if ($('.search-config-modal').is(':visible')) e.preventDefault();
+		if ($('.search-config-modal').is(':visible')) {
+			console.log('lol');
+			//$('*:not(.search-config-modal div)').css('pointer-events', 'none');
+			e.preventDefault();
+		}
 	});
 });

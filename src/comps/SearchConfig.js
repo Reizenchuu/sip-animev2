@@ -12,11 +12,13 @@ export default class SearchConfig extends React.Component {
 	}
 
 	handleOpenModal(modalName) {
+		const modalVisibility = Object.values(this.state);
+		if (modalVisibility.includes(true)) return;
 		this.setState({ [modalName]: true });
 	}
 
 	handleCloseModal(modalName) {
-		this.setState({ [modalName]: false });
+		//this.setState({ [modalName]: false });
 	}
 
 	render() {
