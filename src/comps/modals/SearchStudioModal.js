@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Modal } from 'react-bootstrap';
 
 export default class SearchStudioModal extends React.Component {
 	constructor(props) {
@@ -15,25 +16,16 @@ export default class SearchStudioModal extends React.Component {
 		};
 		this.handleStudioClick = this.handleStudioClick.bind(this);
 		this.resetOptions = this.resetOptions.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.applyOptions = this.applyOptions.bind(this);
-		//to handle clicks outside modal
-		this.wrapperRef = React.createRef();
-		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
 	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClickOutside);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.handleClickOutside);
-	}
-
-	handleClickOutside(event) {
-		if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
-			this.handleCloseModal();
-		}
+		const selectedStudios = this.props.selectedStudios;
+		const Studios = this.state.Studios.map((stdObj) => {
+			if (selectedStudios.includes(stdObj.studio)) return { studio: stdObj.studio, selected: true };
+			return { studio: stdObj.studio, selected: false };
+		});
+		this.setState({ Studios, selectedStudios });
 	}
 
 	handleStudioClick(Studio, key) {
@@ -60,14 +52,10 @@ export default class SearchStudioModal extends React.Component {
 		this.setState({ Studios, selectedStudios: [] });
 	}
 
-	handleCloseModal() {
-		this.resetOptions();
-		this.props.handleCloseModal();
-	}
-
 	applyOptions() {
 		//we call props method that handles this part
 		//we send the selectedStudios array in the method
+		this.props.applyChanges(this.state.selectedStudios);
 	}
 
 	render() {
@@ -86,10 +74,14 @@ export default class SearchStudioModal extends React.Component {
 		));
 
 		return (
-			<div className="modal search-config-modal" style={this.props.modalShow ? { display: 'block' } : null}>
+			<Modal
+				className="modal search-config-modal"
+				show={this.props.show}
+				onHide={() => this.props.handleCloseModal()}
+			>
 				<div className="modal-content">
 					<div className="modal-header">
-						<span className="icon-Movie modal-close" onClick={() => this.handleCloseModal()} />
+						<span className="icon-Movie modal-close" onClick={() => this.props.handleCloseModal()} />
 						<div className="modal-title">Studios</div>
 						<div className="modal-button" onClick={() => this.resetOptions()}>
 							Reset
@@ -101,13 +93,15 @@ export default class SearchStudioModal extends React.Component {
 						<div className="modal-body-options">{listStudios}</div>
 					</div>
 					<div className="modal-footer">
-						<div className="modal-button" onClick={() => this.handleCloseModal()}>
+						<div className="modal-button" onClick={() => this.props.handleCloseModal()}>
 							Cancel
 						</div>
-						<div className="modal-button">Apply</div>
+						<div className="modal-button" onClick={() => this.applyOptions()}>
+							Apply
+						</div>
 					</div>
 				</div>
-			</div>
+			</Modal>
 		);
 	}
 }

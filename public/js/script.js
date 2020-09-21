@@ -131,12 +131,4 @@ jQuery(document).ready(function($) {
 		$('header#masthead-pro').toggleClass('active-mobile-icon-pro');
 		$('header#videohead-pro').toggleClass('active-mobile-icon-pro');
 	});
-
-	$('*:not(.search-config-modal)').click((e) => {
-		if ($('.search-config-modal').is(':visible')) {
-			console.log('lol');
-			//$('*:not(.search-config-modal div)').css('pointer-events', 'none');
-			e.preventDefault();
-		}
-	});
 });

@@ -6,22 +6,35 @@ import SearchSortModal from './modals/SearchSortModal';
 export default class SearchConfig extends React.Component {
 	constructor() {
 		super();
-		this.state = { tagsModalShow: false, studioModalShow: false, sortModalShow: false };
+		this.state = {
+			tagsModalShow: false,
+			studioModalShow: false,
+			sortModalShow: false,
+			selectedTags: [],
+			selectedSutios: [],
+			selectedSortMethod: null
+		};
 		this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
+		this.applyChanges = this.applyChanges.bind(this);
 	}
 
 	handleOpenModal(modalName) {
-		const modalVisibility = Object.values(this.state);
-		if (modalVisibility.includes(true)) return;
 		this.setState({ [modalName]: true });
 	}
 
 	handleCloseModal(modalName) {
-		//this.setState({ [modalName]: false });
+		this.setState({ [modalName]: false });
+	}
+
+	applyChanges(modalName, selectedOptions) {
+		if (modalName === 'tagsModalShow') this.setState({ selectedTags: selectedOptions });
+		if (modalName === 'studioModalShow') this.setState({ selectedSutios: selectedOptions });
+		this.handleCloseModal(modalName);
 	}
 
 	render() {
+		//console.log('in parent: ' + this.state.selectedTags);
 		return (
 			<div>
 				<div className="vertical-flex sf-menu search-config" id="video-search-header-filtering-padding">
@@ -59,19 +72,23 @@ export default class SearchConfig extends React.Component {
 						</div>
 					</div>
 				</div>
+				{this.state.tagsModalShow ? (
+					<SearchTagModal
+						show={this.state.tagsModalShow}
+						selectedTags={this.state.selectedTags}
+						handleCloseModal={() => this.handleCloseModal('tagsModalShow')}
+						applyChanges={(selectedTags) => this.applyChanges('tagsModalShow', selectedTags)}
+					/>
+				) : null}
 
-				<SearchTagModal
-					modalShow={this.state.tagsModalShow}
-					handleCloseModal={() => this.handleCloseModal('tagsModalShow')}
-				/>
-				<SearchStudioModal
-					modalShow={this.state.studioModalShow}
-					handleCloseModal={() => this.handleCloseModal('studioModalShow')}
-				/>
-				<SearchSortModal
-					modalShow={this.state.sortModalShow}
-					handleCloseModal={() => this.handleCloseModal('sortModalShow')}
-				/>
+				{this.state.studioModalShow ? (
+					<SearchStudioModal
+						show={this.state.studioModalShow}
+						selectedStudios={this.state.selectedSutios}
+						handleCloseModal={() => this.handleCloseModal('studioModalShow')}
+						applyChanges={(selectedStudio) => this.applyChanges('studioModalShow', selectedStudio)}
+					/>
+				) : null}
 			</div>
 		);
 	}

@@ -5175,26 +5175,25 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 }
 
 /*----------------------MODALS-------------------------*/
-
+/*
 .modal {
-	display: none; /* Hidden by default */
-	position: relative; /* Stay in place */
-	z-index: 1; /* Sit on top */
-	padding-top: 100px; /* Location of the box */
+	display: none; 
+	position: relative; 
+	z-index: 1; 
+	padding-top: 100px;
 	left: 15%;
 	top: 0;
-	width: 65%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
+	width: 65%; 
+	height: 100%; 
+	overflow: auto; 
 	filter: blur(0px) !important;
 }
 
-/* Modal Content */
 .modal-content {
 	background-color: #fefefe;
 	margin: auto;
 	width: 80%;
-	/*border: none !important;*/
+	
 }
 
 .modal-header,
@@ -5230,6 +5229,6 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 	font-family: 'Montserrat', sans-serif;
 	width: 25%;
 	text-align: center;
-}
+}*/
 
 /*-----------------------modal search options ------------------------------*/

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Modal } from 'react-bootstrap';
 
 export default class SearchTagModal extends React.Component {
 	constructor(props) {
@@ -15,31 +16,24 @@ export default class SearchTagModal extends React.Component {
 		};
 		this.handleTagClick = this.handleTagClick.bind(this);
 		this.resetOptions = this.resetOptions.bind(this);
-		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.applyOptions = this.applyOptions.bind(this);
-		//to handle clicks outside modal
-		this.wrapperRef = React.createRef();
-		this.handleClickOutside = this.handleClickOutside.bind(this);
 	}
 
+	//setting the selected tags remembered by the searchconfig comp
+	//also setting the bools in tags based on the selected tags
 	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClickOutside);
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.handleClickOutside);
-	}
-
-	handleClickOutside(event) {
-		if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
-			this.handleCloseModal();
-		}
+		const selectedTags = this.props.selectedTags;
+		const tags = this.state.tags.map((tagObj) => {
+			if (selectedTags.includes(tagObj.tag)) return { tag: tagObj.tag, selected: true };
+			return { tag: tagObj.tag, selected: false };
+		});
+		this.setState({ tags, selectedTags });
 	}
 
 	handleTagClick(tag, key) {
 		let tags = this.state.tags.slice();
-		const tagIsAlreadySelected = tags[key].selected;
 		let selectedTags = this.state.selectedTags.slice();
+		const tagIsAlreadySelected = tags[key].selected;
 		if (!tagIsAlreadySelected) {
 			//adding tag to selected tags array
 			selectedTags.push(tag);
@@ -60,18 +54,14 @@ export default class SearchTagModal extends React.Component {
 		this.setState({ tags, selectedTags: [] });
 	}
 
-	handleCloseModal() {
-		this.resetOptions();
-		this.props.handleCloseModal();
-	}
-
+	//closes the modal in the props method
 	applyOptions() {
-		//we call props method that handles this part
-		//we send the selectedTags array in the method
+		this.props.applyChanges(this.state.selectedTags);
 	}
 
 	render() {
-		//listing all the tags hardcoded in state as divs
+		//console.log(this.state.selectedTags);
+
 		const tags = this.state.tags;
 		const listTags = tags.map((tagObj, key) => (
 			<div className="search-config-option" key={key} onClick={() => this.handleTagClick(tagObj.tag, key)}>
@@ -80,14 +70,15 @@ export default class SearchTagModal extends React.Component {
 		));
 
 		return (
-			<div
+			<Modal
 				className="modal search-config-modal"
-				style={this.props.modalShow ? { display: 'block' } : null}
-				ref={this.wrapperRef}
+				show={this.props.show}
+				onHide={() => this.props.handleCloseModal()}
+				//animation={false}
 			>
 				<div className="modal-content">
 					<div className="modal-header">
-						<span className="icon-Movie modal-close" onClick={() => this.handleCloseModal()} />
+						<span className="icon-Movie modal-close" onClick={() => this.props.handleCloseModal()} />
 						<div className="modal-title">Tags</div>
 						<div className="modal-button" onClick={() => this.resetOptions()}>
 							Reset
@@ -99,13 +90,15 @@ export default class SearchTagModal extends React.Component {
 						<div className="modal-body-options">{listTags}</div>
 					</div>
 					<div className="modal-footer">
-						<div className="modal-button" onClick={() => this.handleCloseModal()}>
+						<div className="modal-button" onClick={() => this.props.handleCloseModal()}>
 							Cancel
 						</div>
-						<div className="modal-button">Apply</div>
+						<div className="modal-button" onClick={() => this.applyOptions()}>
+							Apply
+						</div>
 					</div>
 				</div>
-			</div>
+			</Modal>
 		);
 	}
 }

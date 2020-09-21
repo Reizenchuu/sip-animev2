@@ -8,6 +8,7 @@ export default class SearchRoute extends React.Component {
 		return (
 			<main id="col-main">
 				<SearchService isPhone={true} />
+
 				<SearchConfig />
 			</main>
 		);
