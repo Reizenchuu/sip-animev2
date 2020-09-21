@@ -1,7 +1,7 @@
 import React from 'react';
 import SearchTagModal from './modals/SearchTagsModal';
 import SearchStudioModal from './modals/SearchStudioModal';
-import SearchSortModal from './modals/SearchSortModal';
+import { Dropdown } from 'semantic-ui-react';
 
 export default class SearchConfig extends React.Component {
 	constructor() {
@@ -9,7 +9,6 @@ export default class SearchConfig extends React.Component {
 		this.state = {
 			tagsModalShow: false,
 			studioModalShow: false,
-			sortModalShow: false,
 			selectedTags: [],
 			selectedSutios: [],
 			selectedSortMethod: null
@@ -17,6 +16,7 @@ export default class SearchConfig extends React.Component {
 		this.handleOpenModal = this.handleOpenModal.bind(this);
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.applyChanges = this.applyChanges.bind(this);
+		this.changeSortMethod = this.changeSortMethod.bind(this);
 	}
 
 	handleOpenModal(modalName) {
@@ -33,7 +33,44 @@ export default class SearchConfig extends React.Component {
 		this.handleCloseModal(modalName);
 	}
 
+	changeSortMethod(selectedSortMethod) {
+		this.setState({ selectedSortMethod });
+	}
+
 	render() {
+		const sortMethods = [
+			'Recent uploads',
+			'Old uploads',
+			'Highest Ratings',
+			'Lowest ratings',
+			'Newest',
+			'Oldest',
+			'Alphabetical A-Z',
+			'Alphabetical Z-A'
+		];
+		const sortDropDownMenu = (
+			<Dropdown
+				icon=""
+				style={{
+					position: 'absolute',
+					width: '100%',
+					height: '100%',
+					top: '0',
+					left: '0'
+				}}
+			>
+				<Dropdown.Menu>
+					{sortMethods.map((entry, key) => (
+						<Dropdown.Item
+							key={key}
+							text={entry}
+							value={entry}
+							onClick={(e, data) => this.changeSortMethod(data.value)}
+						/>
+					))}
+				</Dropdown.Menu>
+			</Dropdown>
+		);
 		//console.log('in parent: ' + this.state.selectedTags);
 		return (
 			<div>
@@ -45,9 +82,8 @@ export default class SearchConfig extends React.Component {
 						<span className="icon-Movie" />Studios
 					</div>
 					<div className="search-config-item">
-						<div onClick={() => this.handleOpenModal('sortModalShow')}>
-							<span className="icon-Movie" />Sort
-						</div>
+						<span className="icon-Movie" />Sort
+						{sortDropDownMenu}
 					</div>
 					<div className="search-config-item">
 						<span className="icon-Movie" />Reset
@@ -63,8 +99,9 @@ export default class SearchConfig extends React.Component {
 							<span className="icon-Movie mobile-icon" />
 						</div>
 
-						<div className="search-config-item" onClick={() => this.handleOpenModal('sortModalShow')}>
+						<div className="search-config-item">
 							<span className="icon-Movie mobile-icon" />
+							{sortDropDownMenu}
 						</div>
 
 						<div className="search-config-item">

@@ -1,11 +1,12 @@
 import React from 'react';
 import SideBarMenu from './comps/SideBarMenu';
 import StickyHeader from './comps/StickyHeader';
+import 'semantic-ui-css/semantic.min.css';
 import './assets/css/bootstrap.min.css';
 import './assets/css/style.css';
 import './assets/css/icons/fontawesome/css/fontawesome-all.min.css';
 import './assets/css/icons/Iconsmind__Ultimate_Pack/Line icons/styles.min.css';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LandingRoute from './routes/LandingRoute';
 import BrowseRoute from './routes/BrowseRoute';
 import ContactRoute from './routes/ContactRoute';
@@ -46,7 +47,9 @@ function App() {
 						{' '}
 						<SeriesRoute />{' '}
 					</Route>
-					<Route exact path="*" />
+					<Route exact path="*">
+						<LandingRoute />
+					</Route>
 					<Route exact path="/terms" />
 				</Switch>
 			</Router>
