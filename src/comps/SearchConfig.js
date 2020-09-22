@@ -17,6 +17,7 @@ export default class SearchConfig extends React.Component {
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 		this.applyChanges = this.applyChanges.bind(this);
 		this.changeSortMethod = this.changeSortMethod.bind(this);
+		this.resetConfig = this.resetConfig.bind(this);
 	}
 
 	handleOpenModal(modalName) {
@@ -37,7 +38,19 @@ export default class SearchConfig extends React.Component {
 		this.setState({ selectedSortMethod });
 	}
 
+	resetConfig() {
+		this.setState({
+			selectedTags: [],
+			selectedSutios: [],
+			selectedSortMethod: null
+		});
+	}
+
 	render() {
+		//before anything, we need to make a call to props.applyConfig
+		//the searchRoute would build the url using the config params
+		//then set the result of the request sent to the server as state
+		//which will then render the anime list with new content
 		const sortMethods = [
 			'Recent uploads',
 			'Old uploads',
@@ -65,6 +78,7 @@ export default class SearchConfig extends React.Component {
 							key={key}
 							text={entry}
 							value={entry}
+							icon={this.state.selectedSortMethod === entry ? 'circle thin' : ''}
 							onClick={(e, data) => this.changeSortMethod(data.value)}
 						/>
 					))}
@@ -86,7 +100,7 @@ export default class SearchConfig extends React.Component {
 						{sortDropDownMenu}
 					</div>
 					<div className="search-config-item">
-						<span className="icon-Movie" />Reset
+						<span className="icon-Movie" onClick={() => this.resetConfig()} />Reset
 					</div>
 				</div>
 
@@ -105,7 +119,7 @@ export default class SearchConfig extends React.Component {
 						</div>
 
 						<div className="search-config-item">
-							<span className="icon-Movie mobile-icon" />
+							<span className="icon-Movie mobile-icon" onClick={() => this.resetConfig()} />
 						</div>
 					</div>
 				</div>
