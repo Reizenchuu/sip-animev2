@@ -42,7 +42,7 @@ export default class SearchConfig extends React.Component {
 		this.setState({
 			selectedTags: [],
 			selectedSutios: [],
-			selectedSortMethod: null
+			selectedSortMethod: ''
 		});
 	}
 
@@ -99,8 +99,8 @@ export default class SearchConfig extends React.Component {
 						<span className="icon-Movie" />Sort
 						{sortDropDownMenu}
 					</div>
-					<div className="search-config-item">
-						<span className="icon-Movie" onClick={() => this.resetConfig()} />Reset
+					<div className="search-config-item" onClick={() => this.resetConfig()}>
+						<span className="icon-Movie"  />Reset
 					</div>
 				</div>
 
@@ -118,8 +118,8 @@ export default class SearchConfig extends React.Component {
 							{sortDropDownMenu}
 						</div>
 
-						<div className="search-config-item">
-							<span className="icon-Movie mobile-icon" onClick={() => this.resetConfig()} />
+						<div className="search-config-item" onClick={() => this.resetConfig()}>
+							<span className="icon-Movie mobile-icon"  />
 						</div>
 					</div>
 				</div>
